@@ -3,7 +3,7 @@ version: '3'
 services:
   front-end:
     build: .
-    image: angular-front:latest
+    image: henriquelbaron/cadastro-front-end
     network_mode: bridge
     ports:
       - 80:80

@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  front-end:
+    build: .
+    image: angular-front:latest
+    network_mode: bridge
+    ports:
+      - 80:80
+    links:
+      - api
+
+  api:
+    build: .
+    image: henriquelbaron/cadastro-api:1.1.0
+    network_mode: bridge
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/formulario
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=drop-and-create
+
+  db:
+    image: 'postgres:13.1-alpine'
+    network_mode: bridge
+    container_name: db
+    expose:
+      - 5439
+    ports:
+      - 5439:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=formulario
